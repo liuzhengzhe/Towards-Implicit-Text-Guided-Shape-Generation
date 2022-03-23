@@ -5,7 +5,7 @@ Code for the paper [Towards Implicit Text-Guided 3D Shape Generation], CVPR 2022
 
 This code is based on IM-Net https://github.com/czq142857/IM-NET-pytorch
 
-**Authors**: Zhengzhe Liu, Yi Yang, Xiaojuan Qi, Chi-Wing Fu
+**Authors**: Zhengzhe Liu, Yi Wang, Xiaojuan Qi, Chi-Wing Fu
 
 <img src="image.PNG" width="900"/>
 
