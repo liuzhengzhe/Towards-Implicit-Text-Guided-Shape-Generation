@@ -38,7 +38,7 @@ python 2_gather_256vox_16_32_64.py.py
 
 
 ## Pretrained Model
-We provide pretrained models for each training step. Download it [here](). "Put them to generation/checkpoint"
+We provide pretrained models for each training step. Download it [here](). "Put them to generation/checkpoint/color_all_ae_64/"
 
 
 

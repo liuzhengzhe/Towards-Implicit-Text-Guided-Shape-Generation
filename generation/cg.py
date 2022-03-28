@@ -4,7 +4,7 @@ dic=torch.load('checkpoint/color_all_ae_64/IM_AE.model32-499.pth')
 
 for k in model.keys():
   if 'linear_1.weight' in k:
-    data=torch.zeros((1024,323))
+    data=torch.zeros((1024,259+32))
     data[:,:259]=model[k]
     dic[k]=data
     #dic[k.replace('linear_1.weight','linear_1_cct.weight')]=data

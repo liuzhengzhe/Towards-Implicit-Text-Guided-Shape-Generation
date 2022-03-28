@@ -218,7 +218,7 @@ class generator(nn.Module):
 		self.point_dim = point_dim
 		self.gf_dim = gf_dim
 		d_model=32
-		self.linear_1 = nn.Linear(self.z_dim+self.point_dim+d_model*2, self.gf_dim*8, bias=True)
+		self.linear_1 = nn.Linear(self.z_dim+self.point_dim+d_model, self.gf_dim*8, bias=True)
 		self.linear_2 = nn.Linear(self.gf_dim*8, self.gf_dim*8, bias=True)
 		self.linear_3 = nn.Linear(self.gf_dim*8, self.gf_dim*8, bias=True)
 		self.linear_4 = nn.Linear(self.gf_dim*8, self.gf_dim*4, bias=True)
@@ -246,22 +246,17 @@ class generator(nn.Module):
 
 		self.linear_text_k = nn.Linear(768, d_model, bias=True)
 		#self.linear_text_v = nn.Linear(768, d_model, bias=True)
-		self.linear_shape_q0 = nn.Linear(256+3, self.gf_dim*8, bias=True)
-		self.linear_shape_q1 = nn.Linear(self.gf_dim*8, self.gf_dim*8, bias=True)
-		self.linear_shape_q2 = nn.Linear(self.gf_dim*8, self.gf_dim*8, bias=True)
-		self.linear_shape_q3 = nn.Linear(self.gf_dim*8, self.gf_dim*8, bias=True)
-		self.linear_shape_q4 = nn.Linear(self.gf_dim*8, d_model, bias=True)
-
+		self.linear_shape_q = nn.Linear(259, d_model, bias=True)
 		self.linear_final = nn.Linear(d_model, d_model, bias=True)
-   
 		nn.init.normal_(self.linear_text_k.weight, mean=1e-5, std=0.02)
-		nn.init.normal_(self.linear_shape_q0.weight, mean=1e-5, std=0.02)
-		nn.init.normal_(self.linear_shape_q1.weight, mean=1e-5, std=0.02)
-		nn.init.normal_(self.linear_shape_q2.weight, mean=1e-5, std=0.02)
-		nn.init.normal_(self.linear_shape_q3.weight, mean=1e-5, std=0.02)  
-		nn.init.normal_(self.linear_shape_q4.weight, mean=1e-5, std=0.02)
+		#nn.init.constant_(self.linear_text_k.bias,0)
+		#nn.init.normal_(self.linear_text_v.weight, mean=1e-5, std=0.02)
+		#nn.init.constant_(self.linear_text_v.bias,0)
+		nn.init.normal_(self.linear_shape_q.weight, mean=1e-5, std=0.02)
+		#nn.init.constant_(self.linear_shape_q.bias,0)
+   
 		self.N=4
-		self.layers = get_clones(DecoderLayer(d_model, 1), self.N)
+		self.layers = get_clones(DecoderLayer(d_model, 4), self.N)
 		self.pe = PositionalEncoder(d_model)
    
 		'''dropout=0.1
@@ -281,26 +276,22 @@ class generator(nn.Module):
    
 	def forward(self, points, z, texts, masks, is_training=False):
 		zs = z.view(-1,1,self.z_dim).repeat(1,points.size()[1],1)
-		#print (z.shape, points.shape, zs.shape)
+   
 		#print (points.shape, z.shape)
 		pointz = torch.cat([points,zs],2)
-		#points85=points.repeat(1,1,10)
-		#pointzs=torch.cat([zs,points85],2)
-
-		linear_text_k =  self.linear_text_k(texts)  
-		q0 =  self.linear_shape_q0(pointz.detach())
-		q0 = F.leaky_relu(q0, negative_slope=0.02, inplace=True)
-		q1 =  self.linear_shape_q1(q0)
-		q1 = F.leaky_relu(q1, negative_slope=0.02, inplace=True)
-		q2 =  self.linear_shape_q2(q1)
-		q2 = F.leaky_relu(q2, negative_slope=0.02, inplace=True)
-		q3 =  self.linear_shape_q3(q2)
-		q3 = F.leaky_relu(q3, negative_slope=0.02, inplace=True)
-		q4 =  self.linear_shape_q4(q3)
-		linear_shape_q = F.leaky_relu(q4, negative_slope=0.02, inplace=True)
-
+		#print (texts.shape, pointz.shape)
+		#print (torch.unique(points),torch.unique(zs))
+		linear_text_k =  self.linear_text_k(texts)
+		#linear_text_v =  self.linear_text_v(texts)   
+		linear_shape_q =  self.linear_shape_q(pointz.detach())
+		#print (linear_text_k.shape, linear_shape_q.shape)
+		'''att1=torch.einsum('btd,bsd->bts', linear_text_k, linear_shape_q)  #b, t, s
+		att1=self.softmax(att1)
+		position_sense_feat=torch.einsum('bts,btd->bsd', att1, linear_text_v ) '''
+		#print ('pointz',torch.unique(pointz), torch.unique(texts))
+		#print ('weight', torch.unique(self.linear_text_k.weight), torch.unique(self.linear_shape_q.weight))
+		#print ('bias', torch.unique(self.linear_text_k.bias), torch.unique(self.linear_shape_q.bias))
 		x=linear_shape_q
-		#x=F.normalize(x, p=2, dim=1)
 		src_mask=masks
 		#print (masks.shape)
 		'''x =  self.dropout_2(self.attn_2(linear_shape_q, linear_text_k, linear_text_v, src_mask))
@@ -318,8 +309,7 @@ class generator(nn.Module):
 		#print ('x2',torch.unique(x))
 		#print (torch.unique(pointz) ,torch.unique(x))
 		#print (torch.unique(pointz),torch.unique(x))
-		pointz = torch.cat([pointz, x, linear_shape_q],2)
-		#pointz_std = torch.cat([pointz_std, x],2)
+		pointz = torch.cat([pointz, x],2)
 		#print (torch.unique(position_sense_feat))
 		l1 = self.linear_1(pointz)
 		l1 = F.leaky_relu(l1, negative_slope=0.02, inplace=True)
@@ -340,12 +330,13 @@ class generator(nn.Module):
 		l6 = F.leaky_relu(l6, negative_slope=0.02, inplace=True)
 
 		l7 = self.linear_7(l6)
-		#l8 = self.linear_8(l6)
+		l8 = self.linear_8(l6)
    
 		#l7 = torch.clamp(l7, min=0, max=1)
 		l7 = torch.max(torch.min(l7, l7*0.01+0.99), l7*0.01)
-
-
+		l8 = torch.max(torch.min(l8, l8*0+1), l8*0) 
+		#for i in range(4096):
+		# #print ('l8',l8[0,i,:])
 		return l7
 
 class generator_color(nn.Module):
@@ -355,7 +346,7 @@ class generator_color(nn.Module):
 		self.point_dim = point_dim
 		self.gf_dim = gf_dim
 		d_model=32
-		self.linear_1 = nn.Linear(self.z_dim+self.point_dim+d_model*2, self.gf_dim*8, bias=True)
+		self.linear_1 = nn.Linear(self.z_dim+self.point_dim+d_model, self.gf_dim*8, bias=True)
 		self.linear_2 = nn.Linear(self.gf_dim*8, self.gf_dim*8, bias=True)
 		self.linear_3 = nn.Linear(self.gf_dim*8, self.gf_dim*8, bias=True)
 		self.linear_4 = nn.Linear(self.gf_dim*8, self.gf_dim*4, bias=True)
@@ -382,25 +373,19 @@ class generator_color(nn.Module):
 
 
 		self.linear_text_k = nn.Linear(768, d_model, bias=True)
-		self.linear_shape_q0 = nn.Linear(256+3, self.gf_dim*8, bias=True)
-		self.linear_shape_q1 = nn.Linear(self.gf_dim*8, self.gf_dim*8, bias=True)
-		self.linear_shape_q2 = nn.Linear(self.gf_dim*8, self.gf_dim*8, bias=True)
-		self.linear_shape_q3 = nn.Linear(self.gf_dim*8, self.gf_dim*8, bias=True)
-		self.linear_shape_q4 = nn.Linear(self.gf_dim*8, d_model, bias=True)
-
-
+		#self.linear_text_v = nn.Linear(768, d_model, bias=True)
+		self.linear_shape_q = nn.Linear(259, d_model, bias=True)
 
 		self.linear_final = nn.Linear(d_model, d_model, bias=True)
    
 		nn.init.normal_(self.linear_text_k.weight, mean=1e-5, std=0.02)
-		nn.init.normal_(self.linear_shape_q0.weight, mean=1e-5, std=0.02)
-		nn.init.normal_(self.linear_shape_q1.weight, mean=1e-5, std=0.02)
-		nn.init.normal_(self.linear_shape_q2.weight, mean=1e-5, std=0.02)
-		nn.init.normal_(self.linear_shape_q3.weight, mean=1e-5, std=0.02)  
-		nn.init.normal_(self.linear_shape_q4.weight, mean=1e-5, std=0.02)
- 
+		#nn.init.constant_(self.linear_text_k.bias,0)
+		#nn.init.normal_(self.linear_text_v.weight, mean=1e-5, std=0.02)
+		#nn.init.constant_(self.linear_text_v.bias,0)
+		nn.init.normal_(self.linear_shape_q.weight, mean=1e-5, std=0.02)
+		#nn.init.constant_(self.linear_shape_q.bias,0)
 		self.N=4
-		self.layers = get_clones(DecoderLayer(d_model, 1), self.N)
+		self.layers = get_clones(DecoderLayer(d_model, 4), self.N)
 		self.pe = PositionalEncoder(d_model)
 
 
@@ -430,26 +415,21 @@ class generator_color(nn.Module):
 	def forward(self, points, z, texts, masks, is_training=False):
 		zs = z.view(-1,1,self.z_dim).repeat(1,points.size()[1],1)
 		pointz = torch.cat([points,zs],2)
-
-		#points85=points.repeat(1,1,10)
-		#pointzs=torch.cat([zs,points85],2)
-
-		linear_text_k =  self.linear_text_k(texts)  
-		q0 =  self.linear_shape_q0(pointz.detach())
-		q0 = F.leaky_relu(q0, negative_slope=0.02, inplace=True)
-		q1 =  self.linear_shape_q1(q0)
-		q1 = F.leaky_relu(q1, negative_slope=0.02, inplace=True)
-		q2 =  self.linear_shape_q2(q1)
-		q2 = F.leaky_relu(q2, negative_slope=0.02, inplace=True)
-		q3 =  self.linear_shape_q3(q2)
-		q3 = F.leaky_relu(q3, negative_slope=0.02, inplace=True)
-		q4 =  self.linear_shape_q4(q3)
-		linear_shape_q = F.leaky_relu(q4, negative_slope=0.02, inplace=True)
+		pointz = torch.cat([points,zs],2)
+		#print (texts.shape, pointz.shape)
+		#print (torch.unique(points),torch.unique(zs))
+		linear_text_k =  self.linear_text_k(texts)
+		#linear_text_v =  self.linear_text_v(texts)   
+		linear_shape_q =  self.linear_shape_q(pointz.detach())
+		#print (linear_text_k.shape, linear_shape_q.shape)
+		'''att1=torch.einsum('btd,bsd->bts', linear_text_k, linear_shape_q)  #b, t, s
+		att1=self.softmax(att1)
+		position_sense_feat=torch.einsum('bts,btd->bsd', att1, linear_text_v ) '''
    
 
 		x=linear_shape_q
-		#x=F.normalize(x, p=2, dim=1)
-		linear_text_k = self.pe(linear_text_k)
+
+		#linear_text_k = self.pe(linear_text_k)
 		#print ('generator color',torch.unique(x))
 		src_mask=masks
 
@@ -480,8 +460,7 @@ class generator_color(nn.Module):
 		att1=torch.einsum('btd,bsd->bts', linear_text_k, linear_shape_q)  #b, t, s
 		att1=self.softmax(att1)
 		position_sense_feat=torch.einsum('bts,btd->bsd', att1, linear_text_v ) '''
-
-		pointz = torch.cat([pointz, x, linear_shape_q],2)
+		pointz = torch.cat([pointz, x],2)
 		l1 = self.linear_1(pointz)
 		l1 = F.leaky_relu(l1, negative_slope=0.02, inplace=True)
 
@@ -506,11 +485,9 @@ class generator_color(nn.Module):
 		#l7 = torch.clamp(l7, min=0, max=1)
 		#l7 = torch.max(torch.min(l7, l7*0.01+0.99), l7*0.01)
 		l8 = torch.max(torch.min(l8, l8*0+1), l8*0) 
-
-
-
+		#for i in range(4096):
+		# #print ('l8',l8[0,i,:])
 		return l8
-
 
 
 
@@ -1890,7 +1867,7 @@ class IM_div(object):
 		checkpoint_txt = os.path.join(self.checkpoint_path, "checkpoint")
 		if 1: #os.path.exists(checkpoint_txt):
 			#model_dir='checkpoint/color_all_ae_64/IM_AE.model16-29_raw.pth'
-			model_dir='checkpoint/color_all_ae_64/div.model64-99.pth'
+			model_dir='checkpoint/color_all_ae_64/div.model64-149.pth'
 			models=torch.load(model_dir)
 			self.im_network.load_state_dict(torch.load(model_dir),strict=True)
 			#model_dir='../merge-cyclic-multi-att/checkpoint/color_all_ae_64/IM_AE.model64-209_raw.pth' #IM_AE.model32-199_save_from150.pth'
@@ -2013,8 +1990,9 @@ class IM_div(object):
 			 model_z_shape, _, z_vector_c2_shape,_,_,_,_ = self.im_network(None,None, cube_float64, None,None, None,None, None, words, is_training=False)
 			 #print (model_z.shape,  z_vector_c2.shape)
 
-			 text_feat=torch.cat((model_z.unsqueeze(1),z_vector_c2.unsqueeze(1)),1).detach().cpu().numpy()
+			 text_feat=torch.cat((model_z.unsqueeze(0),z_vector_c2.unsqueeze(0)),1).detach().cpu().numpy()
 			 shape_feat=torch.cat((model_z_shape,z_vector_c2_shape),1).detach().cpu().numpy()
+			 #print (text_feat.shape, shape_feat.shape)
 
 			 np.save('result/div/shape_feat/'+data[1]+'_'+str(data[2][:50].replace('/',' '))+str(idx)+'.npy', shape_feat)
 			 np.save('result/div/text_feat/'+data[1]+'_'+str(data[2][:50].replace('/',' '))+str(idx)+'.npy', text_feat)  
