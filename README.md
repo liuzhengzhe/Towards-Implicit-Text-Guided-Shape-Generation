@@ -24,7 +24,7 @@ This code is based on IM-Net https://github.com/czq142857/IM-NET-pytorch
 
 ## Data Preparation
 
-* Download our [hdf5_train_new] and [hdf5_test_new](https://drive.google.com/file/d/1sc7HRpL3e8oYJXlN3CjLioTRln2GkXai/view?usp=sharing).
+* Download our [hdf5_train_new, hdf5_test_new](https://drive.google.com/file/d/1sc7HRpL3e8oYJXlN3CjLioTRln2GkXai/view?usp=sharing).
 
 OR
 
