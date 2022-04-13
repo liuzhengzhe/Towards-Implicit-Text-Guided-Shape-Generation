@@ -24,7 +24,7 @@ This code is based on IM-Net https://github.com/czq142857/IM-NET-pytorch
 
 ## Data Preparation
 
-* Download our [hdf5_train_new]() and [hdf5_test_new]().
+* Download our [hdf5_train_new] and [hdf5_test_new](https://drive.google.com/file/d/1sc7HRpL3e8oYJXlN3CjLioTRln2GkXai/view?usp=sharing).
 
 OR
 
@@ -38,7 +38,7 @@ python 2_gather_256vox_16_32_64.py.py
 
 
 ## Pretrained Model
-We provide pretrained models for each training step. Download it [here](). Put them to "generation/checkpoint/color_all_ae_64/"
+We provide pretrained models for each training step. Still download it [here](https://drive.google.com/file/d/1sc7HRpL3e8oYJXlN3CjLioTRln2GkXai/view?usp=sharing). Put them to "generation/checkpoint/color_all_ae_64/"
 
 
 
