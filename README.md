@@ -78,8 +78,8 @@ sh train.sh
 
 ## Manipulation
 
-## Pretrained Model
-We provide pretrained models for each training step. Still download it [here](https://drive.google.com/file/d/1sc7HRpL3e8oYJXlN3CjLioTRln2GkXai/view?usp=sharing). Put them to "mainpulation/checkpoint/color_all_ae_64/"
+## Trained Model
+We provide trained models [here](https://drive.google.com/drive/folders/1LZ9q_W2H-ff_TcyvFG4EpGrl9xnprpgI?usp=sharing). Put them to "mainpulation/checkpoint/color_all_ae_64/"
 
 ## Inference
 
