@@ -1,0 +1,12 @@
+[CLS] black color rec ##tangle table with wooden legs used for office and home purpose [SEP],16aca29aae2d252cb8372f06f79c32ca,101 2304 3609 28667 23395 2795 2007 4799 3456 2109 2005 2436 1998 2188 3800 102
+[CLS] white color rec ##tangle table with wooden legs used for office and home purpose [SEP],16aca29aae2d252cb8372f06f79c32ca,101 2317 3609 28667 23395 2795 2007 4799 3456 2109 2005 2436 1998 2188 3800 102
+[CLS] it is a metal framed table . its top is in glass . it is gray in color . [SEP],9271bb0cab9365d44b3c42e318f3affc,101 2009 2003 1037 3384 10366 2795 1012 2049 2327 2003 1999 3221 1012 2009 2003 3897 1999 3609 1012 102
+[CLS] it is a metal framed table . its top is in glass . it is brown in color . [SEP],9271bb0cab9365d44b3c42e318f3affc,101 2009 2003 1037 3384 10366 2795 1012 2049 2327 2003 1999 3221 1012 2009 2003 2829 1999 3609 1012 102
+[CLS] a pool table with green felt surface and thick brown legs . [SEP],f9d9ef770e04c5772b3242897b354191,101 1037 4770 2795 2007 2665 2371 3302 1998 4317 2829 3456 1012 102
+[CLS] a pool table with green felt surface and thick white legs . [SEP],f9d9ef770e04c5772b3242897b354191,101 1037 4770 2795 2007 2665 2371 3302 1998 4317 2317 3456 1012 102
+[CLS] a square shaped glass table with four metal round legs attached . [SEP],fe9d363792ee708b35836c728d324152,101 1037 2675 5044 3221 2795 2007 2176 3384 2461 3456 4987 1012 102
+[CLS] a square shaped glass table with four wooden round legs attached . [SEP],fe9d363792ee708b35836c728d324152,101 1037 2675 5044 3221 2795 2007 2176 4799 2461 3456 4987 1012 102
+[CLS] a silver coloured table with top curved at edges and dark base [SEP],70e3188676407076c3bd24f986301745,101 1037 3165 11401 2795 2007 2327 9203 2012 7926 1998 2601 2918 102
+[CLS] a silver coloured table with top curved at edges and bright base [SEP],70e3188676407076c3bd24f986301745,101 1037 3165 11401 2795 2007 2327 9203 2012 7926 1998 4408 2918 102
+[CLS] a circular shaped glass table with metal legs [SEP],3dd0f8b4dd8a688aba893aa9f42bc953,101 1037 8206 5044 3221 2795 2007 3384 3456 102
+[CLS] a circular shaped wooden table with metal legs [SEP],3dd0f8b4dd8a688aba893aa9f42bc953,101 1037 8206 5044 4799 2795 2007 3384 3456 102

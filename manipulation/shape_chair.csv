@@ -1,0 +1,12 @@
+[CLS] a dark wooden framed chair with arms . the seat and back are a cushions in a light tan color . [SEP],633110fedf1efac0f7628281ecb18112,101 1037 2601 4799 10366 3242 2007 2608 1012 1996 2835 1998 2067 2024 1037 27205 1999 1037 2422 9092 3609 1012 102
+[CLS] a dark wooden framed chair without arms . the seat and back are a cushions in a light tan color . [SEP],633110fedf1efac0f7628281ecb18112,101 1037 2601 4799 10366 3242 2302 2608 1012 1996 2835 1998 2067 2024 1037 27205 1999 1037 2422 9092 3609 1012 102
+"[CLS] a square , brown , wooden chair with a tall back and short legs . [SEP]",239a5029476b8a2adb6f46583a3903bd,101 1037 2675 1010 2829 1010 4799 3242 2007 1037 4206 2067 1998 2460 3456 1012 102
+"[CLS] a square , brown , wooden chair with a short back and tall legs . [SEP]",239a5029476b8a2adb6f46583a3903bd,101 1037 2675 1010 2829 1010 4799 3242 2007 1037 2460 2067 1998 4206 3456 1012 102
+[CLS] a sky blue chair with stripped brown back and long supports [SEP],9189415b98c9981cc2b6cd34eca9d8c1,101 1037 3712 2630 3242 2007 10040 2829 2067 1998 2146 6753 102
+[CLS] a sky blue chair with stripped brown back and short supports [SEP],9189415b98c9981cc2b6cd34eca9d8c1,101 1037 3712 2630 3242 2007 10040 2829 2067 1998 2460 6753 102
+[CLS] four leg cushion chair and handle made of wood and square base grey in color [SEP],633110fedf1efac0f7628281ecb18112,101 2176 4190 22936 3242 1998 5047 2081 1997 3536 1998 2675 2918 4462 1999 3609 102
+[CLS] four leg simple chair and handle made of wood and square base grey in color [SEP],633110fedf1efac0f7628281ecb18112,101 2176 4190 3722 3242 1998 5047 2081 1997 3536 1998 2675 2918 4462 1999 3609 102
+[CLS] a sofa chair with arm ##rest and has pink ##ish color . [SEP],3dd8c11bc608441f1b17743c18fb63dc,101 1037 10682 3242 2007 2849 28533 1998 2038 5061 4509 3609 1012 102
+[CLS] a simple chair with arm ##rest and has pink ##ish color . [SEP],3dd8c11bc608441f1b17743c18fb63dc,101 1037 3722 3242 2007 2849 28533 1998 2038 5061 4509 3609 1012 102
+[CLS] single person sofa chair . brown fabric with wooden base and legs [SEP],58bd152fb816ad2f7f91c3974257b780,101 2309 2711 10682 3242 1012 2829 8313 2007 4799 2918 1998 3456 102
+[CLS] single person simple chair . brown fabric with wooden base and legs [SEP],58bd152fb816ad2f7f91c3974257b780,101 2309 2711 3722 3242 1012 2829 8313 2007 4799 2918 1998 3456 102

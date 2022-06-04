@@ -72,9 +72,34 @@ python main.py --ae --sample_dir samples/im_ae_out --start 0 --end 7454
 sh train.sh
 ```
 
+
+
+
+
 ## Manipulation
 
-Coming soon. 
+## Pretrained Model
+We provide pretrained models for each training step. Still download it [here](https://drive.google.com/file/d/1sc7HRpL3e8oYJXlN3CjLioTRln2GkXai/view?usp=sharing). Put them to "mainpulation/checkpoint/color_all_ae_64/"
+
+## Inference
+
+```
+python main.py --color_chair --sample_dir samples/im_ae_out --start 0 --end 10
+python main.py --color_table --sample_dir samples/im_ae_out --start 0 --end 10
+python main.py --shape_chair --sample_dir samples/im_ae_out --start 0 --end 10
+python main.py --shape_table --sample_dir samples/im_ae_out --start 0 --end 10
+```
+
+## Training Manipulation Model
+
+Put the above "div.model64-199_raw.pth" in the generation-model set to "mainpulation/checkpoint/color_all_ae_64/" as the initialization model. 
+
+```
+python main.py --color_chair --train --epoch 150 --sample_vox_size 64
+python main.py --shape_chair --train --epoch 150 --sample_vox_size 64
+python main.py --color_table --train --epoch 150 --sample_vox_size 64
+python main.py --shape_table --train --epoch 150 --sample_vox_size 64
+```
 
 ## Contact
 If you have any questions or suggestions about this repo, please feel free to contact me (liuzhengzhelzz@gmail.com).
