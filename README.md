@@ -84,10 +84,10 @@ We provide trained models [here](https://drive.google.com/drive/folders/1LZ9q_W2
 ## Inference
 
 ```
-python main.py --color_chair --sample_dir samples/im_ae_out --start 0 --end 10 -high_resolution
-python main.py --color_table --sample_dir samples/im_ae_out --start 0 --end 10 -high_resolution
-python main.py --shape_chair --sample_dir samples/im_ae_out --start 0 --end 10 -high_resolution
-python main.py --shape_table --sample_dir samples/im_ae_out --start 0 --end 10 -high_resolution
+python main.py --color_chair --sample_dir samples/im_ae_out --start 0 --end 10 --high_resolution
+python main.py --color_table --sample_dir samples/im_ae_out --start 0 --end 10 --high_resolution
+python main.py --shape_chair --sample_dir samples/im_ae_out --start 0 --end 10 --high_resolution
+python main.py --shape_table --sample_dir samples/im_ae_out --start 0 --end 10 --high_resolution
 ```
 
 You can generate coarse shapes fast by removing "--high_resolution"
