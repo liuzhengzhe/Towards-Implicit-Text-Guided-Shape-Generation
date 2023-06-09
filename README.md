@@ -104,6 +104,12 @@ python main.py --color_table --train --epoch 150 --sample_vox_size 64
 python main.py --shape_table --train --epoch 150 --sample_vox_size 64
 ```
 
+## Evaluation
+
+PS/FPD evaluation code
+
+https://drive.google.com/file/d/1vniFpLFZwDfwMT3Ce2KXNQB8Bdv65iUG/view?usp=drive_link
+
 ## Contact
 If you have any questions or suggestions about this repo, please feel free to contact me (liuzhengzhelzz@gmail.com).
 
